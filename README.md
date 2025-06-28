@@ -100,4 +100,3 @@ http://localhost:3000
 ## 👤 Author
 
 **Muhammad Hadianur Al Rafi**  
-Mahasiswa Teknik Informatika, Universitas Palangka Raya  
