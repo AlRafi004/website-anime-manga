@@ -1,5 +1,5 @@
 "use client";
-import { useParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import useSWR from "swr";
 import Link from "next/link";
 import Image from "next/image";
@@ -16,10 +16,11 @@ interface JikanEpisode {
   images?: { jpg: { image_url: string } };
 }
 
-
 export default function EpisodeListPage() {
   const params = useParams();
+  const searchParams = useSearchParams();
   const { id } = params;
+  const epQuery = searchParams?.get("ep");
   // Fetch episode list
   const { data, error, isLoading } = useSWR(
     id ? `https://api.jikan.moe/v4/anime/${id}/episodes` : null,
@@ -30,6 +31,21 @@ export default function EpisodeListPage() {
     id ? `https://api.jikan.moe/v4/anime/${id}` : null,
     fetcher
   );
+
+  // Filter episode jika ada query ep
+  let episodes: JikanEpisode[] = data?.data || [];
+  if (epQuery && episodes.length > 0) {
+    const epNumber = parseInt(epQuery, 10);
+    if (!isNaN(epNumber)) {
+      episodes = episodes.filter((ep) => ep.mal_id === epNumber);
+    }
+  }
+
+  // Jika hanya satu episode, gunakan flex dan center
+  const gridClass =
+    episodes.length === 1
+      ? "flex justify-center items-center min-h-[300px]"
+      : "grid grid-cols-1 md:grid-cols-2 gap-6";
 
   return (
     <div className="max-w-4xl mx-auto p-4">
@@ -66,12 +82,12 @@ export default function EpisodeListPage() {
       {error && (
         <div className="text-center text-red-500">Gagal memuat episode.</div>
       )}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {data?.data?.length > 0 ? (
-          data.data.map((ep: JikanEpisode) => (
+      <div className={gridClass}>
+        {episodes.length > 0 ? (
+          episodes.map((ep: JikanEpisode) => (
             <div
               key={ep.mal_id}
-              className="bg-gradient-to-br from-blue-100 to-white dark:from-blue-900 dark:to-gray-900 rounded-xl shadow-lg flex flex-col h-full border border-blue-200 dark:border-blue-700 hover:scale-[1.02] transition-transform"
+              className="bg-gradient-to-br from-blue-100 to-white dark:from-blue-900 dark:to-gray-900 rounded-xl shadow-lg flex flex-col h-full border border-blue-200 dark:border-blue-700 hover:scale-[1.02] transition-transform max-w-md w-full"
             >
               {ep.images?.jpg?.image_url && (
                 <div
@@ -108,15 +124,17 @@ export default function EpisodeListPage() {
                     </div>
                   )}
                 </div>
-                {ep.url && (
-                  <Link
-                    href={ep.url}
-                    target="_blank"
-                    className="mt-4 inline-block bg-blue-500 text-white px-4 py-2 rounded-full font-semibold shadow hover:bg-blue-600 transition"
-                  >
-                    Tonton di MyAnimeList
-                  </Link>
-                )}
+                {/* Tombol cari streaming */}
+                <a
+                  href={`https://www.google.com/search?q=nonton+streaming+${encodeURIComponent(
+                    animeDetail?.data?.title || ""
+                  )}+episode+${ep.mal_id}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-4 inline-block bg-blue-500 text-white px-4 py-2 rounded-full font-semibold shadow hover:bg-blue-600 transition text-center"
+                >
+                  Cari Streaming di Google
+                </a>
               </div>
             </div>
           ))

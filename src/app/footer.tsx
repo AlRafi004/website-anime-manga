@@ -9,12 +9,10 @@ export default function Footer() {
           <h3 className="font-bold text-blue-700 dark:text-blue-300 mb-2">
             Tentang Kami
           </h3>
-          <p className="mb-2">
-            JaksonAnimeManga adalah platform streaming & info anime/manga
-            terlengkap, terinspirasi dari Crunchyroll, dengan nuansa biru khas
-            Indonesia.
+          <p className="mb-2 text-justify">
+            JaksonAnimeManga adalah platform streaming dan info anime serta
+            manga terlengkap, dengan nuansa biru yang khas.
           </p>
-          <p>&copy; {new Date().getFullYear()} JaksonAnimeManga</p>
         </div>
         {/* Navigasi */}
         <div>
@@ -104,6 +102,12 @@ export default function Footer() {
             </li>
           </ul>
         </div>
+      </div>
+      <div className="w-screen relative left-1/2 -translate-x-1/2">
+        <hr className="my-4 border-t border-gray-300 dark:border-gray-700 w-full" />
+      </div>
+      <div className="max-w-6xl mx-auto px-4">
+        <p>&copy; {new Date().getFullYear()} JaksonAnimeManga</p>
       </div>
     </footer>
   );

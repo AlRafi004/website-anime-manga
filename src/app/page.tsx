@@ -71,8 +71,7 @@ export default function Home() {
             </h1>
             <p className="text-lg md:text-xl text-blue-800 dark:text-blue-100 mb-6 max-w-2xl mx-auto">
               Streaming & info anime dan manga terlengkap, update setiap hari.
-              Temukan anime favoritmu, bookmark, dan nikmati pengalaman seperti
-              Crunchyroll dengan nuansa biru!
+              Temukan anime favoritmu, bookmark, dan nikmati pengalaman dengan nuansa biru!
             </p>
           </div>
         </div>
